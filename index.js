@@ -6,6 +6,7 @@ const userRoutes = require('./routes/users.js')
 const mongoose = require('mongoose')
 
 const dotenv = require('dotenv')
+const cors = require('cors')
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ mongoose.connect(
     process.env.MONGO_URL)
     .then(()=>console.log("db connected")).catch((err)=>{console.log(err)});
 const app = express();
+app.use(cors());
 
 const PORT = process.env.PORT ||5000;
 

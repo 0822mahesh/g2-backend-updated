@@ -23,13 +23,13 @@ router.post('/', async (req,res)=>{
         password:req.body.password,
     });
     try {
-        if (newUser.password !== req.body.conformPassword){
-        res.status(400).json("conform password not match");
-        }else{
+        //if (newUser.password !== req.body.conformPassword){
+        //res.status(400).json("conform password not match");
+        //}else{
         newUser.password = CryptoJS.AES.encrypt(newUser.password, process.env.PASS_CODE);
         const savedUser = await(newUser.save());
         console.log(savedUser);
-        res.status(201).json(savedUser)}
+        res.status(201).json(savedUser)//}
     }
     catch(err){
         //res.send(err)
