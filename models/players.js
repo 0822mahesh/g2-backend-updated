@@ -23,7 +23,12 @@ const PlayerSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tournament: { type: mongoose.Schema.Types.ObjectId, ref: "Tornaments" },
+  //tournament: { type: mongoose.Schema.Types.ObjectId, ref: "Tornaments" },
+
+  tournament: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Players", PlayerSchema);
