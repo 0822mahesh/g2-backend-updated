@@ -16,30 +16,35 @@ router.get("/", (req, res) => {
 
 //it will take time to connect with database so used ASYNC
 router.post("/", async (req, res) => {
-  const newUser = new Tuser({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    phoneNumber: req.body.phoneNumber,
-    //password:CryptoJS.AES.encrypt(req.body.conformPassword, process.env.PASS_CODE),
-    //conformPassword:CryptoJS.AES.encrypt(req.body.conformPassword, process.env.PASS_CODE)
-    password: req.body.password,
-  });
   try {
-    //if (newUser.password !== req.body.conformPassword){
-    //res.status(400).json("conform password not match");
-    //}else{
-    newUser.password = CryptoJS.AES.encrypt(
-      newUser.password,
-      process.env.PASS_CODE
-    );
-    const savedUser = await newUser.save();
-    console.log(savedUser);
-    res.status(201).json(savedUser); //}
+    const newUser = new Tuser({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phoneNumber: req.body.phoneNumber,
+      //password:CryptoJS.AES.encrypt(req.body.conformPassword, process.env.PASS_CODE),
+      //conformPassword:CryptoJS.AES.encrypt(req.body.conformPassword, process.env.PASS_CODE)
+      password: req.body.password,
+    });
+    try {
+      //if (newUser.password !== req.body.conformPassword){
+      //res.status(400).json("conform password not match");
+      //}else{
+      newUser.password = CryptoJS.AES.encrypt(
+        newUser.password,
+        process.env.PASS_CODE
+      );
+      const savedUser = await newUser.save();
+      console.log(savedUser);
+      res.status(201).json(savedUser); //}
+    } catch (err) {
+      //res.send(err)
+      res.status(401).json(err);
+      console.log(err.errors);
+    }
   } catch (err) {
-    //res.send(err)
-    //res.status(400).json(err)
-    console.log(err);
+    console.log(err.errors);
+    res.send(err.errors);
   }
 });
 
@@ -66,8 +71,8 @@ router.post("/login", async (req, res) => {
       const { password, ...others } = user._doc;
       res.status(200).json({ ...others, accessToken });
     }
-  } catch (err) {
-    res.status(404).json(err);
+  } catch (error) {
+    res.status(404).json(error.errors._message);
   }
 });
 
