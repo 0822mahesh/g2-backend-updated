@@ -23,14 +23,6 @@ const TournamentsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-   place: {
-    type: String,
-    required: true,
-  },
-  hostName: {
-    type: String,
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("Tornaments", TournamentsSchema);
